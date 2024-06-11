@@ -6,7 +6,7 @@ async function main(key = null) {
   if (!key) key = Wallet.createRandom().privateKey;
   const wallet = new Wallet(key);
   const client = await Client.create(await wallet.getAddress(), {
-    env: "production",
+    env: "dev",
     dbPath: "./db/db",
   });
   let object = {
