@@ -1,12 +1,13 @@
 import { Wallet } from "ethers";
 import { Client } from "@xmtp/mls-client";
+import { inspect } from "node:util";
 
 async function main(key = null) {
   if (!key) key = Wallet.createRandom().privateKey;
   const wallet = new Wallet(key);
   const client = await Client.create(await wallet.getAddress(), {
     env: "dev",
-    dbPath: "./db",
+    dbPath: "./db/db",
   });
   let object = {
     privateKey: key,
@@ -15,12 +16,12 @@ async function main(key = null) {
     inboxId: client.inboxId,
     installationId: client.installationId,
   };
-  console.log(object);
 
+  console.log(object);
   await client.conversations.sync();
   const conversations = await client.conversations.list();
-  console.log(conversations);
 
+  console.log(conversations.length);
   for (const conv of conversations) {
     console.log(conv.id);
   }
