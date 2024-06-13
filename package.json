@@ -4,8 +4,10 @@
     "node": ">=20"
   },
   "dependencies": {
-    "@xmtp/mls-client": "^0.0.5",
+    "@xmtp/mls-client": "latest",
+    "@xmtp/xmtp-js": "^11.6.3",
     "dotenv": "^16.4.5",
-    "ethers": "^5.7.2"
+    "ethers": "^5.7.2",
+    "viem": "^2.13.10"
   }
 }

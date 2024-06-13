@@ -1,12 +1,12 @@
 import { Wallet } from "ethers";
 import { Client } from "@xmtp/mls-client";
-import { inspect } from "node:util";
 
 async function main(key = null) {
   if (!key) key = Wallet.createRandom().privateKey;
   const wallet = new Wallet(key);
   const client = await Client.create(await wallet.getAddress(), {
-    env: "dev",
+    apiUrl: "https://grpc.production.xmtp.network:443",
+    env: "production",
     dbPath: "./db/db",
   });
   let object = {

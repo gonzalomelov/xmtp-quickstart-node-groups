@@ -430,9 +430,9 @@
   integrity sha512-Vvn3zZrhQZkkBE8LSuW3em98c0FwgO4nxzv6OdSxPKJIEKY2bGbHn+mhGIPerzI4twdxaP8/0+06HBpwf345Lw==
 
 "@scure/base@~1.1.0", "@scure/base@~1.1.2":
-  version "1.1.6"
-  resolved "https://registry.yarnpkg.com/@scure/base/-/base-1.1.6.tgz#8ce5d304b436e4c84f896e0550c83e4d88cb917d"
-  integrity sha512-ok9AWwhcgYuGG3Zfhyqg+zwl+Wn5uE+dwC0NV/2qQkx4dABbb/bx96vWu8NSj+BNjjSjno+JRYRjle1jV08k3g==
+  version "1.1.7"
+  resolved "https://registry.yarnpkg.com/@scure/base/-/base-1.1.7.tgz#fe973311a5c6267846aa131bc72e96c5d40d2b30"
+  integrity sha512-PPNYBslrLNNUQ/Yad37MHYsNQtK67EhWb6WtSvNLLPo7SdVZgkUjD6Dg+5On7zNwmskf8OX7I7Nx5oN+MIWE0g==
 
 "@scure/bip32@1.3.2":
   version "1.3.2"
@@ -466,19 +466,26 @@
     "@xmtp/proto" "3.56.0"
     long "^5.2.3"
 
-"@xmtp/mls-client-bindings-node@^0.0.3":
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/@xmtp/mls-client-bindings-node/-/mls-client-bindings-node-0.0.3.tgz#9f23ead3f8cf8d4901be9ea5a574fb57e5f5368b"
-  integrity sha512-fD8NoFOiv701E685aNpGu42cj3WAiFI8zcVCOi2303+iqG/7kpqc9A3nKl25ND3x0GvyeBAbTSgbbE+3KJCEfw==
-
-"@xmtp/mls-client@^0.0.5":
-  version "0.0.5"
-  resolved "https://registry.yarnpkg.com/@xmtp/mls-client/-/mls-client-0.0.5.tgz#a0a9ef367df5fcceb6b335d9dd3b9baa979f8d26"
-  integrity sha512-yIVi4tuLQNBO2vJVKV4kHbNrVXJ/v6LomB/BiCpKTVPfY3cqOrUrQdy5d33lDa7NxQXhO1wkoih0h/KQjaZRhQ==
+"@xmtp/content-type-primitives@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@xmtp/content-type-primitives/-/content-type-primitives-1.0.1.tgz#b0bc4b900ad5b6777f4f35cae60511c1d0c9c3ab"
+  integrity sha512-F/2/yh0UQZb49tuxszTIbH+TDNJhTgSlj3UX8YOevMaMpIAvY26qjIA35M8Bw0nng3aU/iYqFA1p3ZO/7rM9Qw==
   dependencies:
-    "@xmtp/mls-client-bindings-node" "^0.0.3"
     "@xmtp/proto" "^3.61.1"
-    "@xmtp/xmtp-js" "^11.6.2"
+
+"@xmtp/mls-client-bindings-node@^0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@xmtp/mls-client-bindings-node/-/mls-client-bindings-node-0.0.4.tgz#4dd6fa8769ee586be5cd03c5e2dfb8eef7c89863"
+  integrity sha512-QqzM3SQhdRykdZ+lyJmmt8/G2j/HgGLYhEODR5pOAg3+DLLHJR6gri03fYOWKZxi4Mr9IEPUQEnA4zyfe75NRQ==
+
+"@xmtp/mls-client@latest":
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/@xmtp/mls-client/-/mls-client-0.0.7.tgz#a1c7c97b165d4ae3aafb7c69ad3ad925fe1f404c"
+  integrity sha512-geKpzgl41R2FTJ4yU0qzv0dbY7Nm9XQq2iBLJ2Bej+esYa9Nwsq4rRg6v7m1yzUJsxGlImcSAT+6BoHZyIM62w==
+  dependencies:
+    "@xmtp/content-type-primitives" "^1.0.1"
+    "@xmtp/mls-client-bindings-node" "^0.0.4"
+    "@xmtp/proto" "^3.61.1"
 
 "@xmtp/proto@3.54.0":
   version "3.54.0"
@@ -515,7 +522,7 @@
   resolved "https://registry.yarnpkg.com/@xmtp/user-preferences-bindings-wasm/-/user-preferences-bindings-wasm-0.3.6.tgz#4ca58dca940574483caa8cbd4d9c609577b1e0f1"
   integrity sha512-ANi6ikrO6YBaK978sMuEEnpREvFQQnMVaNdlviaLzmc07u4Of4s/VLNnavl4qTb4F4cvwSiBWou0wSYIE5SWYg==
 
-"@xmtp/xmtp-js@^11.6.2":
+"@xmtp/xmtp-js@^11.6.3":
   version "11.6.3"
   resolved "https://registry.yarnpkg.com/@xmtp/xmtp-js/-/xmtp-js-11.6.3.tgz#cf787dd2f33ea2d9c2d49d4f93441692a2962d4e"
   integrity sha512-Bp34Cl6/Ku3gylmQegRWgc2BX20+OD4k6fMWbEoLFKcNxkA0j8XV8Ml7IQ7C+4pyVtrlDA0at33LvmuRd6owsQ==
@@ -660,6 +667,11 @@ isows@1.0.3:
   resolved "https://registry.yarnpkg.com/isows/-/isows-1.0.3.tgz#93c1cf0575daf56e7120bab5c8c448b0809d0d74"
   integrity sha512-2cKei4vlmg2cxEjm3wVSqn8pcoRF/LX/wpifuuNquFO4SQmPwarClT+SUCA2lt+l581tTeZIPIZuIDo2jWN1fg==
 
+isows@1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/isows/-/isows-1.0.4.tgz#810cd0d90cc4995c26395d2aa4cfa4037ebdf061"
+  integrity sha512-hEzjY+x9u9hPmBom9IIAqdJCwNLax+xrPb51vEPpERoFlIxgmZcHzsT5jKG06nvInKOBGvReAVz80Umed5CczQ==
+
 js-sha3@0.8.0:
   version "0.8.0"
   resolved "https://registry.yarnpkg.com/js-sha3/-/js-sha3-0.8.0.tgz#b9b7a5da73afad7dedd0f8c463954cbde6818840"
@@ -739,6 +751,20 @@ viem@2.7.15:
     "@scure/bip39" "1.2.1"
     abitype "1.0.0"
     isows "1.0.3"
+    ws "8.13.0"
+
+viem@^2.13.10:
+  version "2.13.10"
+  resolved "https://registry.yarnpkg.com/viem/-/viem-2.13.10.tgz#c15e5050dde8939ec86e0e0f8a85a34b37b421c4"
+  integrity sha512-fPnbjqlLfWniczYCbnK47MKjyp1/O/b5wMe5ZpflpccD3GUz/f47dLxwLjfSYxXkwS+GERWHWd+2OXb6N/BBQA==
+  dependencies:
+    "@adraffy/ens-normalize" "1.10.0"
+    "@noble/curves" "1.2.0"
+    "@noble/hashes" "1.3.2"
+    "@scure/bip32" "1.3.2"
+    "@scure/bip39" "1.2.1"
+    abitype "1.0.0"
+    isows "1.0.4"
     ws "8.13.0"
 
 ws@7.4.6:
