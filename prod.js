@@ -34,6 +34,7 @@ async function main(key) {
 
   console.log(conversations.length);
   for (const conv of conversations) {
+    console.log(conv);
     const messages = await conv.messages();
     const messages2 = await conv.messages;
     console.log(messages.length, messages[0], messages2[0]);
