@@ -14,6 +14,7 @@ async function main(key) {
     account,
     chain: mainnet,
     transport: http(),
+    codecs: [new TextCodec()],
   });
   const client = await Client.create(account.address, {
     env: "production",
