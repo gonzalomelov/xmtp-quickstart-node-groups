@@ -14,12 +14,12 @@ async function main(key) {
     account,
     chain: mainnet,
     transport: http(),
-    codecs: [new TextCodec()],
   });
   const client = await Client.create(account.address, {
     env: "production",
     apiUrl: "https://grpc.production.xmtp.network:443",
     dbPath: "./db/db",
+    codecs: [new TextCodec()],
   });
   if (!client.isRegistered) {
     const signature = toBytes(
