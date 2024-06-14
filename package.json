@@ -4,7 +4,8 @@
     "node": ">=20"
   },
   "dependencies": {
-    "@xmtp/mls-client": "latest",
+    "@xmtp/content-type-text": "^1.0.0",
+    "@xmtp/mls-client": "^0.0.7",
     "@xmtp/xmtp-js": "^11.6.3",
     "dotenv": "^16.4.5",
     "ethers": "^5.7.2",

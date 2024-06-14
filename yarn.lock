@@ -473,12 +473,19 @@
   dependencies:
     "@xmtp/proto" "^3.61.1"
 
+"@xmtp/content-type-text@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@xmtp/content-type-text/-/content-type-text-1.0.0.tgz#2162862231e8120d21856fce01159fdef4d8601b"
+  integrity sha512-mXkgDHw327SjFoGqV57w/xgZADq2doKZg3eF26Di7NQ9IGvi1LKPVMhwif4xLdA5duR+GZuhsSszkTllim6vug==
+  dependencies:
+    "@xmtp/content-type-primitives" "^1.0.1"
+
 "@xmtp/mls-client-bindings-node@^0.0.4":
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/@xmtp/mls-client-bindings-node/-/mls-client-bindings-node-0.0.4.tgz#4dd6fa8769ee586be5cd03c5e2dfb8eef7c89863"
   integrity sha512-QqzM3SQhdRykdZ+lyJmmt8/G2j/HgGLYhEODR5pOAg3+DLLHJR6gri03fYOWKZxi4Mr9IEPUQEnA4zyfe75NRQ==
 
-"@xmtp/mls-client@latest":
+"@xmtp/mls-client@^0.0.7":
   version "0.0.7"
   resolved "https://registry.yarnpkg.com/@xmtp/mls-client/-/mls-client-0.0.7.tgz#a1c7c97b165d4ae3aafb7c69ad3ad925fe1f404c"
   integrity sha512-geKpzgl41R2FTJ4yU0qzv0dbY7Nm9XQq2iBLJ2Bej+esYa9Nwsq4rRg6v7m1yzUJsxGlImcSAT+6BoHZyIM62w==

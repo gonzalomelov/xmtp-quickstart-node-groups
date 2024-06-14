@@ -2,6 +2,7 @@ import { Client } from "@xmtp/mls-client";
 import { createWalletClient, http, parseEther } from "viem";
 import { privateKeyToAccount } from "viem/accounts";
 import { mainnet } from "viem/chains";
+import { TextCodec } from "@xmtp/content-type-text";
 import { toBytes } from "viem";
 
 async function main(key) {
@@ -34,7 +35,10 @@ async function main(key) {
 
   console.log(conversations.length);
   for (const conv of conversations) {
-    console.log(conv);
+    console.log(conv.id);
+    await conv.send("gm", {
+      contentType: TextCodec,
+    });
     const messages = await conv.messages();
     const messages2 = await conv.messages;
     console.log(messages.length, messages[0], messages2[0]);
