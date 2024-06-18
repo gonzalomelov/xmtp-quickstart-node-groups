@@ -6,6 +6,18 @@ import { mainnet } from "viem/chains";
 import { ContentTypeText } from "@xmtp/content-type-text";
 import { toBytes } from "viem";
 
+// Function to send a message to a specific group
+async function sendMessageToGroup(client, groupId, messageContent) {
+  const conversation = client.conversations.get(groupId);
+  if (!conversation) {
+    console.log(`No conversation found with ID: ${groupId}`);
+    return;
+  }
+  await conversation.send(messageContent, ContentTypeText);
+  console.log(`Message sent to group ${groupId}: ${messageContent}`);
+}
+
+// Function to create a wallet from a private key
 async function createWallet() {
   let key = process.env.KEY;
   if (!key) throw new Error("Key is required");
@@ -52,8 +64,6 @@ async function handleConversations(client) {
   for (const conv of conversations) {
     console.log(`Handling conversation with ID: ${conv.id}`);
     await conv.sync();
-    //await conv.send("gm", ContentTypeText);
-
     const messages = await conv.messages();
     console.log(`Total messages in conversation: ${messages.length}`);
     for (let i = 0; i < messages.length; i++) {
@@ -61,22 +71,33 @@ async function handleConversations(client) {
     }
   }
 }
+// Function to stream all messages and respond to new ones
+async function streamAndRespond(client) {
+  console.log("Started streaming messages");
+  const stream = await client.conversations.streamAllMessages();
+  for await (const message of stream) {
+    console.log(`Streamed message: ${message.content}`);
+    if (message.senderInboxId !== client.inboxId) {
+      sendMessageToGroup(client, message.conversationId, "gm");
+    }
+  }
+}
 
 // Main function to run the application
 async function main() {
+  // Create a new wallet instance
   const wallet = await createWallet();
+  // Set up the XMTP client with the wallet and database path
   const client = await setupClient(wallet, `./db/test`);
+  // Register the client with the XMTP network if not already registered
   await registerClient(client, wallet);
+  // Handle existing conversations
   handleConversations(client);
 
-  // Run message streaming in a parallel thread
+  // Run message streaming in a parallel thread to respond to new messages
   (async () => {
-    const stream = await client.conversations.streamAllMessages();
-    for await (const message of stream) {
-      console.log(`Streamed message: ${message.content}`);
-    }
+    await streamAndRespond(client);
   })();
 }
-
 // Example usage
-main(true);
+main();
