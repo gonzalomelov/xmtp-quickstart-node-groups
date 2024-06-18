@@ -13,10 +13,8 @@ This guide provides a quickstart for integrating the `@xmtp/mls-client` with you
 First, ensure you have the necessary packages installed:
 
 ```bash
-npm install dotenv @xmtp/mls-client viem @xmtp/content-type-text
+yarn install
 ```
-
-## Example Usage
 
 To run the application, execute the following command in your terminal:
 
@@ -24,4 +22,4 @@ To run the application, execute the following command in your terminal:
 node index.js
 ```
 
-This will start the application and process the messaging as configured.
+This will start the application and process the group flow example.
