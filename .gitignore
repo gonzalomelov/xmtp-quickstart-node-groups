@@ -12,6 +12,7 @@
 /.next/
 /out/
 /db
+./db
 conversations.csv
 # production
 /build
