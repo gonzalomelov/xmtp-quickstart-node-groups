@@ -32,13 +32,16 @@ async function createWallet() {
 }
 
 // Function to create and setup the XMTP client
-async function setupClient(wallet, dbPath) {
+async function setupClient(wallet, dbPath, config) {
+  let initialConfig = {
+    env: process.env.XMTP_ENV,
+    dbPath: dbPath,
+  };
+  const finalConfig = { ...initialConfig, ...config };
+
   const client = await Client.create(
     wallet.address ? wallet.address : wallet.account?.address,
-    {
-      env: process.env.XMTP_ENV,
-      dbPath: dbPath,
-    },
+    finalConfig,
   );
   return client;
 }
@@ -88,7 +91,7 @@ async function main() {
   // Create a new wallet instance
   const wallet = await createWallet();
   // Set up the XMTP client with the wallet and database path
-  const client = await setupClient(wallet, `./db/test`);
+  const client = await setupClient(wallet, `./db/test`, config);
   // Register the client with the XMTP network if not already registered
   await registerClient(client, wallet);
   // Handle existing conversations
