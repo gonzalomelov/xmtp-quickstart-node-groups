@@ -1,27 +1,22 @@
 import "dotenv/config";
 import { Client } from "@xmtp/mls-client";
 import { createWalletClient, http } from "viem";
-import { Wallet } from "ethers";
 import { privateKeyToAccount } from "viem/accounts";
 import { mainnet } from "viem/chains";
 import { ContentTypeText } from "@xmtp/content-type-text";
 import { toBytes } from "viem";
 
-// Function to create a wallet client using either 'ethers' or 'viem'
-async function createWallet(useViem = false) {
+async function createWallet() {
   let key = process.env.KEY;
   if (!key) throw new Error("Key is required");
-  if (useViem) {
-    const account = privateKeyToAccount(key);
-    const wallet = createWalletClient({
-      account,
-      chain: mainnet,
-      transport: http(),
-    });
-    return wallet;
-  } else {
-    return new Wallet(key);
-  }
+
+  const account = privateKeyToAccount(key);
+  const wallet = createWalletClient({
+    account,
+    chain: mainnet,
+    transport: http(),
+  });
+  return wallet;
 }
 
 // Function to create and setup the XMTP client
@@ -68,10 +63,8 @@ async function handleConversations(client) {
 }
 
 // Main function to run the application
-async function main(useViem = false) {
-  console.log(`Using ${useViem ? "Viem" : "Ethers"} for wallet management`);
-
-  const wallet = await createWallet(useViem);
+async function main() {
+  const wallet = await createWallet();
   const client = await setupClient(wallet, `./db/test`);
   await registerClient(client, wallet);
   handleConversations(client);
