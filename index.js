@@ -1,34 +1,89 @@
-import { Wallet } from "ethers";
+import "dotenv/config";
 import { Client } from "@xmtp/mls-client";
+import { createWalletClient, http } from "viem";
+import { Wallet } from "ethers";
+import { privateKeyToAccount } from "viem/accounts";
+import { mainnet } from "viem/chains";
+import { ContentTypeText } from "@xmtp/content-type-text";
+import { toBytes } from "viem";
 
-async function main(key = null) {
-  if (!key) key = Wallet.createRandom().privateKey;
-  const wallet = new Wallet(key);
-  const client = await Client.create(await wallet.getAddress(), {
-    apiUrl: "https://grpc.production.xmtp.network:443",
-    env: "production",
-    dbPath: "./db/db",
-  });
-  let object = {
-    privateKey: key,
-    accountAddress: client.accountAddress,
-    conversations: await client.conversations.list(),
-    inboxId: client.inboxId,
-    installationId: client.installationId,
-  };
-
-  console.log(object);
-  await client.conversations.sync();
-  const conversations = await client.conversations.list();
-
-  console.log(conversations.length);
-  for (const conv of conversations) {
-    console.log(conv.id);
+// Function to create a wallet client using either 'ethers' or 'viem'
+async function createWallet(useViem = false) {
+  let key = process.env.KEY;
+  if (!key) throw new Error("Key is required");
+  if (useViem) {
+    const account = privateKeyToAccount(key);
+    const wallet = createWalletClient({
+      account,
+      chain: mainnet,
+      transport: http(),
+    });
+    return wallet;
+  } else {
+    return new Wallet(key);
   }
+}
+
+// Function to create and setup the XMTP client
+async function setupClient(wallet, dbPath) {
+  const client = await Client.create(
+    wallet.address ? wallet.address : wallet.account?.address,
+    {
+      env: process.env.XMTP_ENV,
+      dbPath: dbPath,
+    },
+  );
   return client;
 }
-const client = await main(
-  "0x92e62485dcfa56dfade8ff7da576e4b92a8125108835b696aff4a9dbcd7a3851",
-);
-//0xC2b5d616995014a027576671BcF346234fd8a4ab
-//0x23C37195777532e16aC4a7ccF1611452cd1f24c4
+
+// Function to register the client if not already registered
+async function registerClient(client, wallet) {
+  if (!client.isRegistered) {
+    const signature = toBytes(
+      await wallet.signMessage({
+        message: client.signatureText,
+      }),
+    );
+    client.addEcdsaSignature(signature);
+    await client.registerIdentity();
+  }
+}
+
+// Function to handle conversations
+async function handleConversations(client) {
+  await client.conversations.sync();
+  const conversations = await client.conversations.list();
+  console.log(`Total conversations: ${conversations.length}`);
+  for (const conv of conversations) {
+    console.log(`Handling conversation with ID: ${conv.id}`);
+    await conv.sync();
+    //await conv.send("Hello", ContentTypeText);
+
+    const messages = await conv.messages();
+    console.log(`Total messages in conversation: ${messages.length}`);
+    for (let i = 0; i < messages.length; i++) {
+      console.log(`Message ${i}: ${messages[i].content}`);
+    }
+  }
+}
+
+// Main function to run the application
+async function main(useViem = false) {
+  console.log(`Using ${useViem ? "Viem" : "Ethers"} for wallet management`);
+
+  const wallet = await createWallet(useViem);
+  const client = await setupClient(wallet, `./db/test`);
+  await registerClient(client, wallet);
+  handleConversations(client);
+
+  // Run message streaming in a parallel thread
+  (async () => {
+    const stream = await client.conversations.streamAllMessages();
+    for await (const message of stream) {
+      console.log(`Streamed message: ${message.content}`);
+    }
+  })();
+}
+
+// Example usage
+main(true);
