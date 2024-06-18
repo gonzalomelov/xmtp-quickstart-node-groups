@@ -11,7 +11,7 @@
 # next.js
 /.next/
 /out/
-
+/db
 conversations.csv
 # production
 /build
