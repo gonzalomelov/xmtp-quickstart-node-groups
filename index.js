@@ -52,7 +52,7 @@ async function handleConversations(client) {
   for (const conv of conversations) {
     console.log(`Handling conversation with ID: ${conv.id}`);
     await conv.sync();
-    //await conv.send("Hello", ContentTypeText);
+    //await conv.send("gm", ContentTypeText);
 
     const messages = await conv.messages();
     console.log(`Total messages in conversation: ${messages.length}`);
