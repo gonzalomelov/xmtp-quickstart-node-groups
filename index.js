@@ -1,10 +1,12 @@
 import "dotenv/config";
 import { Client } from "@xmtp/mls-client";
+import * as fs from "fs";
 import { createWalletClient, http } from "viem";
 import { privateKeyToAccount } from "viem/accounts";
 import { mainnet } from "viem/chains";
 import { ContentTypeText } from "@xmtp/content-type-text";
 import { toBytes } from "viem";
+import { generatePrivateKey } from "viem/accounts";
 
 // Function to send a message to a specific group
 async function sendMessageToGroup(client, groupId, messageContent) {
@@ -20,7 +22,13 @@ async function sendMessageToGroup(client, groupId, messageContent) {
 // Function to create a wallet from a private key
 async function createWallet() {
   let key = process.env.KEY;
-  if (!key) throw new Error("Key is required");
+  if (!key) {
+    key = generatePrivateKey();
+    console.error(
+      "KEY not set. Using random one. For using your own wallet , set the KEY environment variable.",
+    );
+    console.log("Random private key: ", key);
+  }
 
   const account = privateKeyToAccount(key);
   const wallet = createWalletClient({
@@ -89,8 +97,11 @@ async function main() {
   // Create a new wallet instance
   const wallet = await createWallet();
   // Set up the XMTP client with the wallet and database path
+  if (!fs.existsSync(`.cache`)) {
+    fs.mkdirSync(`.cache`);
+  }
   const client = await setupClient(wallet, {
-    dbPath: `./db/${wallet.account?.address}-${process.env.XMTP_ENV}`,
+    dbPath: `.cache/${wallet.account?.address}-${process.env.XMTP_ENV}`,
   });
   // Register the client with the XMTP network if not already registered
   await registerClient(client, wallet);
