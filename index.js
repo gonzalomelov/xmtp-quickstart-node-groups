@@ -49,6 +49,7 @@ async function setupClient(wallet, config = {}) {
   const finalConfig = { ...initialConfig, ...config };
 
   const client = await Client.create(wallet.account?.address, finalConfig);
+  console.log("Inbox id: ", client.inboxId);
   return client;
 }
 
