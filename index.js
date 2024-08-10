@@ -4,18 +4,17 @@ import * as fs from "fs";
 import { createWalletClient, http } from "viem";
 import { privateKeyToAccount } from "viem/accounts";
 import { mainnet } from "viem/chains";
-import { ContentTypeText } from "@xmtp/content-type-text";
 import { toBytes } from "viem";
 import { generatePrivateKey } from "viem/accounts";
 
 // Function to send a message to a specific group
 async function sendMessageToGroup(client, groupId, messageContent) {
-  const conversation = client.conversations.get(groupId);
+  const conversation = client.conversations.getConversationById(groupId);
   if (!conversation) {
     console.log(`No conversation found with ID: ${groupId}`);
     return;
   }
-  await conversation.send(messageContent, ContentTypeText);
+  await conversation.send(messageContent);
   console.log(`Message sent to group ${groupId}: ${messageContent}`);
 }
 
@@ -42,9 +41,8 @@ async function createWallet() {
 
 // Function to create and setup the XMTP client
 async function setupClient(wallet, config = {}) {
-  if (!process.env.XMTP_ENV) throw new Error("XMTP_ENV is required");
   let initialConfig = {
-    env: process.env.XMTP_ENV,
+    env: "production",
   };
   const finalConfig = { ...initialConfig, ...config };
 
@@ -92,7 +90,13 @@ async function streamAndRespond(client) {
     }
   }
 }
-
+async function createGroupConversation(client) {
+  const conversation = await client.conversations.newConversation([
+    "0x277C0dd35520dB4aaDDB45d4690aB79353D3368b",
+    "0x13956e5424b9ce4E6C3ca8C070AFff329B371784",
+  ]);
+  console.log(conversation.id);
+}
 // Main function to run the application
 async function main() {
   // Create a new wallet instance
@@ -102,13 +106,12 @@ async function main() {
     fs.mkdirSync(`.cache`);
   }
   const client = await setupClient(wallet, {
-    dbPath: `.cache/${wallet.account?.address}-${process.env.XMTP_ENV}`,
+    dbPath: `.cache/${wallet.account?.address}-${"prod"}`,
   });
   // Register the client with the XMTP network if not already registered
   await registerClient(client, wallet);
   // Handle existing conversations
-  handleConversations(client);
-
+  await handleConversations(client);
   // Run message streaming in a parallel thread to respond to new messages
   (async () => {
     await streamAndRespond(client);
