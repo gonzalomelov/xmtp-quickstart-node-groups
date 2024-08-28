@@ -90,12 +90,14 @@ async function streamAndRespond(client) {
     }
   }
 }
-async function createGroupConversation(client) {
-  const conversation = await client.conversations.newConversation([
-    "0x277C0dd35520dB4aaDDB45d4690aB79353D3368b",
-    "0x13956e5424b9ce4E6C3ca8C070AFff329B371784",
-  ]);
-  console.log(conversation.id);
+async function createGroupConversation(client, groupName, groupDescription, groupImageUrlSquare, memberAddresses) {
+  // Create the group conversation
+  const conversation = await client.conversations.newConversation(
+    memberAddresses,
+    { groupName, groupDescription, groupImageUrlSquare }
+  );
+  console.log(`Group "${groupName}" created with ID: ${conversation.id}`);
+  return conversation;
 }
 // Main function to run the application
 async function main() {
@@ -116,6 +118,19 @@ async function main() {
   (async () => {
     await streamAndRespond(client);
   })();
+  // Example usage of createGroupConversation
+  const groupName = "🖤🤍 Juve Fanatics 🤍🖤";
+  const groupDescription = "Juve Fanatics Group";
+  const groupImageUrlSquare = "https://cdn-icons-png.freepik.com/512/824/824724.png";
+  const memberAddresses = [
+    "0x966fc92Af9A9B8f47E0eAE35C040378989d9b476",
+    "0x7b988d4Bb04e801571080f884172F6d2f1643AB2",
+    "0x40fb65fEA699D0CDBC1e3E6142314B15328a8E14"
+  ];
+  const groupConversation = await createGroupConversation(client, groupName, groupDescription, groupImageUrlSquare, memberAddresses);
+  console.log("Group chat created successfully!");
+  // You can now use this conversation to send messages, etc.
+  await sendMessageToGroup(client, groupConversation.id, "Welcome to the group!");
 }
 // Example usage
 main();
